@@ -48,4 +48,8 @@ export class TaskService {
         found = { ...found, ...updateTaskDto }
         return found
     }
+
+    deleteTask(id: string): void {
+        this.task.filter((item) => item.id !== id)
+    }
 }
