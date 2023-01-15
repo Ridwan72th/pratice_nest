@@ -18,7 +18,6 @@ export class TaskService {
         let task = this.getAllTask()
         if (status) {
             task = task.filter((item) => item.status === status)
-
         }
         if (search) {
             task = task.filter((item) =>
@@ -26,6 +25,10 @@ export class TaskService {
         }
 
         return task
+    }
+
+    getTaskById(id: string): ITask {
+        return this.task.find((item) => item.id === id)
     }
 
     createTask(createTask: CreateTask) {
