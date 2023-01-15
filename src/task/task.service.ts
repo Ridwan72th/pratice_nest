@@ -3,6 +3,7 @@ import { CreateTask } from './dto/create-task.dto';
 import { GetTaskFilterDto } from './dto/get-task-filter.dto';
 import { ETaskStatus, ITask } from './task.model';
 import { v4 as uuid } from "uuid"
+import { UpdateTaskDto } from './dto/put-task.dto';
 
 
 @Injectable()
@@ -42,4 +43,9 @@ export class TaskService {
         return newTask
     }
 
+    updateTask(id: string, updateTaskDto: UpdateTaskDto) {
+        let found = this.getTaskById(id)
+        found = { ...found, ...updateTaskDto }
+        return found
+    }
 }
