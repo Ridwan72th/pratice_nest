@@ -44,8 +44,11 @@ export class TaskService {
     }
 
     updateTask(id: string, updateTaskDto: UpdateTaskDto) {
-        let found = this.getTaskById(id)
-        found = { ...found, ...updateTaskDto }
+        const { title, description, status } = updateTaskDto
+        const found = this.getTaskById(id)
+        found.title = title;
+        found.description = description;
+        found.status = status;
         return found
     }
 
