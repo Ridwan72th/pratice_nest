@@ -10,13 +10,13 @@ import { TaskService } from './task.service';
 export class TaskController {
     constructor(private taskService: TaskService) { }
 
-    // @Get()
-    // getTask(@Query() filterDto: GetTaskFilterDto): ITask[] {
-    //     if (Object.keys(filterDto).length) {
-    //         return this.taskService.getTaskWithFilter(filterDto)
-    //     }
-    //     return this.taskService.getAllTask()
-    // }
+    @Get()
+    getTask(@Query() filterDto: GetTaskFilterDto): Promise<Task[]> {
+        // if (Object.keys(filterDto).length) {
+        //     return this.taskService.getTaskWithFilter(filterDto)
+        // }
+        return this.taskService.getAllTask()
+    }
 
     @Get('/:id')
     getTaskById(@Param('id') id: string): Promise<Task> {
