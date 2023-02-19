@@ -6,6 +6,7 @@ import { v4 as uuid } from "uuid"
 import { TaskRepository } from './task.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
+import { UpdateTaskDto } from './dto/put-task.dto';
 
 
 @Injectable()
@@ -21,19 +22,18 @@ export class TaskService {
         return allTask
     }
 
-    // getTaskWithFilter(filterDto: GetTaskFilterDto) {
-    //     const { status, search } = filterDto
-    //     let task = this.getAllTask()
-    //     if (status) {
-    //         task = task.filter((item) => item.status === status)
-    //     }
-    //     if (search) {
-    //         task = task.filter((item) =>
-    //             item.title.includes(search) || item.description.includes(search))
-    //     }
+    async getTaskWithFilter(filterDto: GetTaskFilterDto) {
+        const { status, search } = filterDto
 
-    //     return task
-    // }
+        const query = this.tasksRepository.createQueryBuilder("task")
+
+        if (status) {
+            query.andWhere("task.status = :status", { status })
+        }
+
+        const task = await query.getMany()
+        return task
+    }
 
     async getTaskById(id: string): Promise<Task> {
         const found = await this.tasksRepository.findOne({
@@ -66,14 +66,15 @@ export class TaskService {
     //     return newTask
     // }
 
-    // updateTask(id: string, updateTaskDto: UpdateTaskDto) {
-    //     const { title, description, status } = updateTaskDto
-    //     const found = this.getTaskById(id)
-    //     found.title = title;
-    //     found.description = description;
-    //     found.status = status;
-    //     return found
-    // }
+    async updateTask(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
+        const { title, description, status } = updateTaskDto
+        const found = await this.getTaskById(id)
+        found.title = title;
+        found.description = description;
+        found.status = status;
+        await this.tasksRepository.save(found)
+        return found
+    }
 
     async deleteTask(id: string): Promise<void> {
         const result = await this.tasksRepository.delete(id)

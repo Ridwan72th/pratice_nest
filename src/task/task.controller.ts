@@ -12,9 +12,9 @@ export class TaskController {
 
     @Get()
     getTask(@Query() filterDto: GetTaskFilterDto): Promise<Task[]> {
-        // if (Object.keys(filterDto).length) {
-        //     return this.taskService.getTaskWithFilter(filterDto)
-        // }
+        if (Object.keys(filterDto).length) {
+            return this.taskService.getTaskWithFilter(filterDto)
+        }
         return this.taskService.getAllTask()
     }
 
@@ -38,10 +38,10 @@ export class TaskController {
     //     return this.taskService.createTask(createTask)
     // }
 
-    // @Put('/:id')
-    // updateTask(@Body() updateTaskDto: UpdateTaskDto, @Param('id') id: string): ITask {
-    //     return this.taskService.updateTask(id, updateTaskDto)
-    // }
+    @Put('/:id')
+    updateTask(@Body() updateTaskDto: UpdateTaskDto, @Param('id') id: string): Promise<Task> {
+        return this.taskService.updateTask(id, updateTaskDto)
+    }
 
     @Delete('/:id')
     deleteTask(@Param('id') id: string): Promise<void> {
